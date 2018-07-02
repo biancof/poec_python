@@ -1,4 +1,9 @@
-class Media:
+# Not finished on July 2nd, thus it doesn't work
+
+import abc
+
+
+class Media(metaclass=abc.ABCMeta):
 
     id = 1
 
@@ -16,8 +21,9 @@ class Media:
 
         Media.id += 1
 
-    def get_net_price(self):
-        return round(self.price * 1.2)
+    @abc.abstractmethod
+    def get_net_price(self):...
+
 
     def _repr_(self):
         auth = ""
@@ -47,6 +53,9 @@ class CD(Media):
         super().__init__(authors, title, price, publisher)
         self.n_tracks = n_tracks
 
+    def get_net_price(self):
+        return round(self.price * 1.20)
+
     def _repr_(self):
         return f"{super()._repr_()}, {self.n_tracks} tracks"
 
@@ -60,7 +69,7 @@ class DVD(Media):
             self.zone = 0
 
     def get_net_price(self):
-        return round(self.price * 1.20 * 0.8)
+        return round(self.price * 1.2 * 0.8)
 
     def _repr_(self):
         return f"{super()._repr_()}, zone {self.zone}"
@@ -92,6 +101,37 @@ class Publisher:
             return f"{self.name}, {self.place}"
         else:
             return self.name
+
+
+class CartRow:
+
+    def __init__(self, media = None):
+        self.media = media
+        self.quantity = 1
+
+    def increment(self):
+        self.quantity += 1
+
+    def decrement(self):
+        self.quantity -= 1
+
+
+class Cart:
+
+    def __init__(self):
+
+        self.cart_rows = []
+
+    def get_total_net_price:
+        total_net_price = 0
+        for row in self.cart_rows:
+            total_net_price += media.get_net_price()
+        return total_net_price
+
+    def add_media(self, media):
+        for row in self.cart_rows:
+            if row
+
 
 
 # Verification code
@@ -130,13 +170,13 @@ if __name__ == "__main__":
         p4 = Publisher("Working Title Films")
 
 
-        m1 = Media(authors1, "Breve guida alla sintassi italiana", 50, p1)
-        b1 = Book(authors2, "Perche scrivere", 48, p1, 600)
+        b1 = Book(authors1, "Breve guida alla sintassi italiana", 50, p1, 120)
+        b2 = Book(authors2, "Perche scrivere", 48, p1, 600)
         c1 = CD(authors3, "Una storia disonesta", 15, p2, 11)
         c2 = CD(authors4, "Che succede quando uno muore", 20, p3, "14 (+ 1 ghost)")
         d1 = DVD(authors5, "The Big Lebowski", 30, p4, 1)
 
-        items =[m1, b1, c1, c2, d1]
+        items =[b1, b2, c1, c2, d1]
 
         print ("\nItems in the list:\n")
 
